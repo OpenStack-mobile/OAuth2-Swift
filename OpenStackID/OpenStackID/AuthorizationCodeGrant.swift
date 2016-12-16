@@ -46,51 +46,7 @@ public struct AuthorizationCodeGrant {
         /// user-agent to the provided client redirection URI using an HTTP
         /// redirection response, or by other means available to it via the
         /// user-agent.
-        public struct Request {
-            
-            /// The client constructs the request URI by adding the following
-            /// parameters to the query component of the authorization endpoint URI
-            /// using the `"application/x-www-form-urlencoded"` format.
-            public enum Parameter: String {
-                
-                /// REQUIRED.  Value MUST be set to "code".
-                case response_type
-                
-                /// REQUIRED.  The client identifier as described in 
-                // [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2).
-                case client_id
-                
-                /// OPTIONAL.  As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2).
-                case redirect_uri
-                
-                /// OPTIONAL.  The scope of the access request as described by
-                /// [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3).
-                case scope
-                
-                /// RECOMMENDED.  An opaque value used by the client to maintain
-                /// state between the request and callback.  The authorization
-                /// server includes this value when redirecting the user-agent back
-                /// to the client.  The parameter SHOULD be used for preventing
-                /// cross-site request forgery as described in
-                /// [Section 10.12](https://tools.ietf.org/html/rfc6749#section-10.12).
-                case state
-            }
-            
-            public static let responseType: AuthorizationResponseType = .authorizationCode
-            
-            /// The client identifier.
-            public var clientIdentifier: String
-            
-            /// The redirection endpoint URI
-            /// as described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2).
-            public var redirectURI: String?
-            
-            /// The scope of the access request.
-            public var scope: String?
-            
-            /// An opaque value used by the client to maintain state between the request and callback.
-            public var state: String?
-        }
+        public typealias Request = AuthorizationRequest
         
         /// [4.1.2.  Authorization Response](https://tools.ietf.org/html/rfc6749#section-4.1.2)
         public struct Response {
@@ -140,84 +96,6 @@ public struct AuthorizationCodeGrant {
                 public let code: String
                 
                 /// Required, if present in request. The same value as sent by the client in the state parameter, if any.
-                public let state: String?
-            }
-            
-            /// [4.1.2.1.  Error Response](https://tools.ietf.org/html/rfc6749#section-4.1.2.1)
-            ///
-            /// For example, the authorization server redirects the user-agent by
-            /// sending the following HTTP response:
-            ///
-            /// ```
-            /// HTTP/1.1 302 Found
-            /// Location: https://client.example.com/cb?error=access_denied&state=xyz
-            /// ```
-            public struct Error: OpenStackID.Response, Swift.Error {
-                
-                public enum Parameter: String {
-                    
-                    /// Required. Must be one of a set of predefined error codes.
-                    case error
-                    
-                    /// Optional. A human-readable UTF-8 encoded text describing the error. Intended for a developer, not an end user.
-                    case error_description
-                    
-                    /// Optional. A URI pointing to a human-readable web page with information about the error.
-                    case error_uri
-                    
-                    /// Required, if present in authorization request. The same value as sent in the state parameter in the request.
-                    case state
-                }
-                
-                /// Authorization Error Response Code
-                public enum Code: String {
-                    
-                    /// The request is missing a required parameter,
-                    /// includes an invalid parameter value,
-                    /// includes a parameter more than once,
-                    /// or is otherwise malformed.
-                    case invalidRequest = "invalid_request"
-                    
-                    /// The client is not authorized to request an access token using this method.
-                    case unauthorizedClient = "unauthorized_client"
-                    
-                    /// The resource owner or authorization server denied the request.
-                    case accessDenied = "access_denied"
-                    
-                    /// The authorization server does not support obtaining an access token using this method.
-                    case unsupportedResponseType = "unsupported_response_type"
-                    
-                    /// The requested scope is invalid, unknown, or malformed.
-                    case invalidScope = "invalid_scope"
-                    
-                    /// The authorization server encountered an unexpected
-                    /// condition that prevented it from fulfilling the request.
-                    ///
-                    /// - Note: This error code is needed because a 500 Internal Server
-                    /// Error HTTP status code cannot be returned to the client via an HTTP redirect.
-                    case serverError = "server_error"
-                    
-                    /// The authorization server is currently unable to handle
-                    /// the request due to a temporary overloading or maintenance of the server.
-                    ///
-                    /// - Note: This error code is needed because a 503 Service Unavailable HTTP status code
-                    /// cannot be returned to the client via an HTTP redirect.
-                    case temporarilyUnavailable = "temporarily_unavailable"
-                }
-                
-                /// Error code
-                public let code: Code
-                
-                /// Optional Human-readable error description returned from server.
-                public let errorDescription: String?
-                
-                /// A URI identifying a human-readable web page with
-                /// information about the error, used to provide the client
-                /// developer with additional information about the error.
-                public let errorURI: String?
-                
-                /// Required, if present in authorization request.
-                /// The same value as sent in the `state` parameter in the request.
                 public let state: String?
             }
             

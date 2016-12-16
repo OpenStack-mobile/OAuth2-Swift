@@ -66,7 +66,7 @@ public struct AccessTokenResponse {
         }
         
         /// The expected HTTP status code is `200`.
-        public static let statusCode: HTTP.StatusCode = .OK
+        //public static let statusCode: HTTP.StatusCode = .OK
         
         /// The access token issued by the authorization server.
         public var accessToken: String
@@ -169,18 +169,6 @@ public struct AccessTokenResponse {
         /// developer with additional information about the error.
         public let errorURI: String?
     }
-}
-
-public enum AccessTokenGrantType: String {
-    
-    /// Resource Owner Password Credentials Grant
-    case password
-    
-    /// Client Credentials Grant
-    case clientCredentials = "client_credentials"
-    
-    /// Authorization Code Token
-    case authorizationCode = "authorization_code"
 }
 
 public protocol GrantRequest: Request {

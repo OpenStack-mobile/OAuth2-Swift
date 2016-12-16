@@ -8,8 +8,10 @@
 
 import Foundation
 
-/// Generic Authorization Request
+/// OAuth2 Authorization Request
 public struct AuthorizationRequest: Request {
+    
+    // MARK: - Supporting Types
     
     /// The client constructs the request URI by adding the following
     /// parameters to the query component of the authorization endpoint URI
@@ -39,7 +41,23 @@ public struct AuthorizationRequest: Request {
         case state
     }
     
-    public var responseType: AuthorizationResponseType = .authorizationCode
+    /// Response type for Authorization Grant requests.
+    public enum ResponseType: String {
+        
+        /// Expected response type for requesting an
+        /// authorization code as described by
+        /// [Section 4.1.1](https://tools.ietf.org/html/rfc6749#section-4.1.1)
+        case authorizationCode = "code"
+        
+        /// Expected response type for requesting an
+        /// access token (implicit grant) as described by
+        /// [Section 4.2.1](https://tools.ietf.org/html/rfc6749#section-4.1.2)
+        case implicit = "token"
+    }
+    
+    // MARK: - Properties
+    
+    public var responseType: ResponseType
     
     /// The client identifier.
     public var clientIdentifier: String
@@ -53,4 +71,11 @@ public struct AuthorizationRequest: Request {
     
     /// An opaque value used by the client to maintain state between the request and callback.
     public var state: String?
+    
+    // MARK: - Methods
+    
+    public func toURLRequest() -> URLRequest {
+        
+        fatalError()
+    }
 }

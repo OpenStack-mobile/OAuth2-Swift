@@ -8,7 +8,7 @@
 
 /// The authorization grant is given to a client application by the resource owner, 
 /// in cooperation with the authorization server associated with the resource server.
-public enum AuthorizationGrantType: String {
+public enum AuthorizationGrantType {
     
     /// An authorization grant using an authorization code works like this (the numbers correspond to the steps shown in the diagram below the description):
     ///
@@ -37,7 +37,7 @@ public enum AuthorizationGrantType: String {
     /// Furthermore, the client application can only send its client ID to the authorization server. If the client were to send its client secret too, the client secret would have to be stored in the user agent or native application too. That would make it vulnerable to hacking.
     ///
     /// Implicit authorization grant is mostly used in a user agent or native client application. The user agent or native application would receive the access token from the authorization server.
-    case implicit = "token"
+    case implicit
     
     /// The resource owner password credentials authorization grant method works by giving the client application access to the resource owners credentials. For instance, a user could type his Twitter user name and password (credentials) into the client application. The client application could then use the user name and password to access resources in Twitter.
     ///
