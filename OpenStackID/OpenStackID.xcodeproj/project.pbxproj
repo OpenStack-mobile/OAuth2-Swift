@@ -12,10 +12,10 @@
 		6E11BEEA1E0424620094204E /* OpenStackID.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E11BEDC1E0424620094204E /* OpenStackID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E11BEF61E0435920094204E /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BEF51E0435920094204E /* Request.swift */; };
 		6E11BEF81E0435990094204E /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BEF71E0435990094204E /* Response.swift */; };
-		6E11BEFC1E043E400094204E /* AuthorizationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BEFB1E043E400094204E /* AuthorizationRequest.swift */; };
 		6E11BF001E0454740094204E /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BEFF1E0454740094204E /* AccessTokenResponse.swift */; };
-		6E11BF021E046B860094204E /* AccessTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BF011E046B860094204E /* AccessTokenRequest.swift */; };
 		6E11BF041E046F280094204E /* AuthorizationCodeGrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BF031E046F280094204E /* AuthorizationCodeGrant.swift */; };
+		6E520FA81E04851600812EE9 /* AuthorizationGrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E520FA71E04851600812EE9 /* AuthorizationGrantType.swift */; };
+		6E520FAA1E048D1800812EE9 /* AccessTokenGrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E520FA91E048D1800812EE9 /* AccessTokenGrantType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,10 +37,10 @@
 		6E11BEE91E0424620094204E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E11BEF51E0435920094204E /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		6E11BEF71E0435990094204E /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		6E11BEFB1E043E400094204E /* AuthorizationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationRequest.swift; sourceTree = "<group>"; };
 		6E11BEFF1E0454740094204E /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
-		6E11BF011E046B860094204E /* AccessTokenRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenRequest.swift; sourceTree = "<group>"; };
 		6E11BF031E046F280094204E /* AuthorizationCodeGrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrant.swift; sourceTree = "<group>"; };
+		6E520FA71E04851600812EE9 /* AuthorizationGrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationGrantType.swift; sourceTree = "<group>"; };
+		6E520FA91E048D1800812EE9 /* AccessTokenGrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenGrantType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,9 +86,9 @@
 				6E11BEDC1E0424620094204E /* OpenStackID.h */,
 				6E11BEF51E0435920094204E /* Request.swift */,
 				6E11BEF71E0435990094204E /* Response.swift */,
-				6E11BEFB1E043E400094204E /* AuthorizationRequest.swift */,
+				6E520FA71E04851600812EE9 /* AuthorizationGrantType.swift */,
+				6E520FA91E048D1800812EE9 /* AccessTokenGrantType.swift */,
 				6E11BF031E046F280094204E /* AuthorizationCodeGrant.swift */,
-				6E11BF011E046B860094204E /* AccessTokenRequest.swift */,
 				6E11BEFF1E0454740094204E /* AccessTokenResponse.swift */,
 				6E11BEDD1E0424620094204E /* Info.plist */,
 			);
@@ -217,10 +217,10 @@
 			files = (
 				6E11BEF81E0435990094204E /* Response.swift in Sources */,
 				6E11BEF61E0435920094204E /* Request.swift in Sources */,
-				6E11BEFC1E043E400094204E /* AuthorizationRequest.swift in Sources */,
 				6E11BF041E046F280094204E /* AuthorizationCodeGrant.swift in Sources */,
-				6E11BF021E046B860094204E /* AccessTokenRequest.swift in Sources */,
+				6E520FA81E04851600812EE9 /* AuthorizationGrantType.swift in Sources */,
 				6E11BF001E0454740094204E /* AccessTokenResponse.swift in Sources */,
+				6E520FAA1E048D1800812EE9 /* AccessTokenGrantType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +427,7 @@
 				6E11BEEF1E0424620094204E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6E11BEF01E0424620094204E /* Build configuration list for PBXNativeTarget "OpenStackIDTests" */ = {
 			isa = XCConfigurationList;
@@ -435,6 +436,7 @@
 				6E11BEF21E0424620094204E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
