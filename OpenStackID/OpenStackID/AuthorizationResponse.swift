@@ -8,6 +8,21 @@
 
 import Foundation
 
+/// Possible response from server
+public enum AuthorizationResponse<Success: Response>: Response {
+    
+    case success(Success)
+    
+    case error(AuthorizationErrorResponse)
+    
+    case invalid(HTTPURLResponse)
+    
+    public init(URLResponse: HTTPURLResponse) {
+        
+        fatalError()
+    }
+}
+
 /// Generic Authorization Error Response as defined in
 /// [4.1.2.1. (Authorization Code Grant) Error Response](https://tools.ietf.org/html/rfc6749#section-4.1.2.1) and
 /// [4.2.2.1. (Implicit Grant) Error Response](https://tools.ietf.org/html/rfc6749#section-4.2.2.1)
@@ -19,7 +34,7 @@ import Foundation
 /// HTTP/1.1 302 Found
 /// Location: https://client.example.com/cb?error=access_denied&state=xyz
 /// ```
-public struct AuthorizationResponse: OpenStackID.Response, Swift.Error {
+public struct AuthorizationErrorResponse: Response, Swift.Error {
     
     public enum Parameter: String {
         
