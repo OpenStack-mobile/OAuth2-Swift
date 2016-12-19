@@ -6,9 +6,9 @@
 //  Copyright © 2016 OpenStack. All rights reserved.
 //
 
-import Foundation
+import SwiftFoundation
 
 public protocol Response {
     
-    init(URLResponse: HTTPURLResponse)
+    init?(urlResponse: HTTP.Response)
 }

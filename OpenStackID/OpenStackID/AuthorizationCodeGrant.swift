@@ -6,7 +6,7 @@
 //  Copyright © 2016 OpenStack. All rights reserved.
 //
 
-import Foundation
+import SwiftFoundation
 
 /// [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
 ///
@@ -94,6 +94,20 @@ public struct AuthorizationCodeGrant {
             
             /// Required, if present in request. The same value as sent by the client in the state parameter, if any.
             public let state: String?
+            
+            public init?(urlResponse: HTTP.Response) {
+                                
+                guard urlResponse.statusCode == HTTP.StatusCode.Found.rawValue,
+                    let redirectURL = urlResponse.url,
+                    let urlComponents = NSURLComponents(url: redirectURL, resolvingAgainstBaseURL: false),
+                    let queryItems = urlComponents.queryItems,
+                    let code = queryItems.first(where: { $0.name == Parameter.code.rawValue })?.value,
+                    let state = queryItems.first(where: { $0.name == Parameter.code.rawValue })?.value
+                    else { return nil }
+                
+                self.code = code
+                self.state = state
+            }
         }
     }
     
@@ -132,7 +146,7 @@ public struct AuthorizationCodeGrant {
         /// "redirect_uri" parameter was included in the initial authorization
         /// request as described in Section 4.1.1, and if included ensure that
         /// their values are identical.
-        public struct Request {
+        public struct Request: OpenStackID.Request {
             
             /// The client makes a request to the token endpoint by sending the
             /// following parameters using the "`application/x-www-form-urlencoded`"
@@ -167,6 +181,11 @@ public struct AuthorizationCodeGrant {
             
             /// The client identifier.
             public var clientIdentifier: String
+            
+            public func toURLRequest() -> HTTP.Request {
+                
+                var request = HTTP.Request(url: <#T##URL#>)
+            }
         }
         
         /// [4.1.4.  Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.1.4)

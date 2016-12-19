@@ -6,9 +6,9 @@
 //  Copyright © 2016 OpenStack. All rights reserved.
 //
 
-import Foundation
+import SwiftFoundation
 
 public protocol Request {
     
-    func toURLRequest() -> URLRequest
+    func toURLRequest() -> HTTP.Request
 }

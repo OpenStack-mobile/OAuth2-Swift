@@ -6,7 +6,7 @@
 //  Copyright © 2016 OpenStack. All rights reserved.
 //
 
-import Foundation
+import SwiftFoundation
 
 /// OAuth2 Authorization Request
 public struct AuthorizationRequest: Request {
@@ -57,6 +57,12 @@ public struct AuthorizationRequest: Request {
     
     // MARK: - Properties
     
+    /// The server URL of the OAuth2 endpoint for authentication grants.
+    public var authorizationEndpoint: String
+    
+    /// The kind of authentication grant flow.
+    ///
+    /// - SeeAlso: `AuthorizationRequest.ResponseType`
     public var responseType: ResponseType
     
     /// The client identifier.
@@ -74,8 +80,35 @@ public struct AuthorizationRequest: Request {
     
     // MARK: - Methods
     
-    public func toURLRequest() -> URLRequest {
+    public func toURLRequest() -> HTTP.Request {
         
-        fatalError()
+        guard var urlComponents = URLComponents(string: authorizationEndpoint)
+            else { fatalError("Invalid URL: \(authorizationEndpoint)") }
+        
+        var queryItems = [URLQueryItem]()
+        
+        queryItems.append(URLQueryItem(name: Parameter.client_id.rawValue, value: clientIdentifier))
+        
+        if let redirectURI = self.redirectURI {
+            
+            queryItems.append(URLQueryItem(name: Parameter.redirect_uri.rawValue, value: redirectURI))
+        }
+        
+        if let scope = self.scope {
+            
+            queryItems.append(URLQueryItem(name: Parameter.scope.rawValue, value: scope))
+        }
+        
+        if let state = self.state {
+            
+            queryItems.append(URLQueryItem(name: Parameter.state.rawValue, value: state))
+        }
+        
+        urlComponents.queryItems = queryItems
+        
+        guard let url = urlComponents.url
+            else { fatalError("Invalid URL components: \(urlComponents)") }
+        
+        return HTTP.Request(url: urlComponents.url!)
     }
 }
