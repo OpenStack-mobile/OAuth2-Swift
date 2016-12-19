@@ -172,6 +172,9 @@ public struct AuthorizationCodeGrant {
             
             public static let grantType: AccessTokenGrantType = .authorizationCode
             
+            /// The URL of the OAuth2 endpoint for access token grants.
+            public var endpoint: String
+            
             /// The authorization code received from the authorization server.
             public var code: String
             
@@ -180,11 +183,35 @@ public struct AuthorizationCodeGrant {
             public var redirectURI: String?
             
             /// The client identifier.
-            public var clientIdentifier: String
+            public var clientIdentifier: String?
             
             public func toURLRequest() -> HTTP.Request {
+                                
+                guard var urlComponents = URLComponents(string: endpoint)
+                    else { fatalError("Invalid URL: \(endpoint)") }
                 
-                var request = HTTP.Request(url: <#T##URL#>)
+                var queryItems = [URLQueryItem]()
+                
+                queryItems.append(URLQueryItem(name: Parameter.grant_type.rawValue, value: type(of: self).grantType.rawValue))
+                
+                queryItems.append(URLQueryItem(name: Parameter.code.rawValue, value: clientIdentifier))
+                
+                if let redirectURI = self.redirectURI {
+                    
+                    queryItems.append(URLQueryItem(name: Parameter.redirect_uri.rawValue, value: redirectURI))
+                }
+                
+                if let clientIdentifier = self.clientIdentifier {
+                    
+                    queryItems.append(URLQueryItem(name: Parameter.client_id.rawValue, value: clientIdentifier))
+                }
+                
+                urlComponents.queryItems = queryItems
+                
+                guard let url = urlComponents.url
+                    else { fatalError("Invalid URL components: \(urlComponents)") }
+                
+                return HTTP.Request(url: url, headers: ["Content-Type": "application/x-www-form-urlencoded"])
             }
         }
         

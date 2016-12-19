@@ -57,8 +57,8 @@ public struct AuthorizationRequest: Request {
     
     // MARK: - Properties
     
-    /// The server URL of the OAuth2 endpoint for authentication grants.
-    public var authorizationEndpoint: String
+    /// The URL of the OAuth2 endpoint for authentication grants.
+    public var endpoint: String
     
     /// The kind of authentication grant flow.
     ///
@@ -82,8 +82,8 @@ public struct AuthorizationRequest: Request {
     
     public func toURLRequest() -> HTTP.Request {
         
-        guard var urlComponents = URLComponents(string: authorizationEndpoint)
-            else { fatalError("Invalid URL: \(authorizationEndpoint)") }
+        guard var urlComponents = URLComponents(string: endpoint)
+            else { fatalError("Invalid URL: \(endpoint)") }
         
         var queryItems = [URLQueryItem]()
         
@@ -109,6 +109,6 @@ public struct AuthorizationRequest: Request {
         guard let url = urlComponents.url
             else { fatalError("Invalid URL components: \(urlComponents)") }
         
-        return HTTP.Request(url: urlComponents.url!)
+        return HTTP.Request(url: url, headers: ["Content-Type": "application/x-www-form-urlencoded"])
     }
 }
