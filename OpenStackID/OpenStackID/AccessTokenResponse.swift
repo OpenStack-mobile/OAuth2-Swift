@@ -6,12 +6,72 @@
 //  Copyright © 2016 OpenStack. All rights reserved.
 //
 
-import Foundation
+import SwiftFoundation
 
-/// If the access token request is valid and authorized, the
-/// authorization server issues an access token and optional refresh token.
+/// [5.1.  Successful Response](https://tools.ietf.org/html/rfc6749#section-5.1)
 ///
-/// - SeeAlso: [Issuing an Access Token](https://tools.ietf.org/html/rfc6749#section-5)
+/// The authorization server issues an access token and optional refresh token, and constructs the response.
+///
+/// For example:
+/// ```
+/// HTTP/1.1 200 OK
+/// Content-Type: application/json;charset=UTF-8
+/// Cache-Control: no-store
+/// Pragma: no-cache
+///
+/// {
+/// "access_token":"2YotnFZFEjr1zCsicMWpAA",
+/// "token_type":"example",
+/// "expires_in":3600,
+/// "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
+/// "example_parameter":"example_value"
+/// }
+/// ```
+public protocol AccessTokenResponse: Response {
+    
+    /// The access token issued by the authorization server.
+    var accessToken: String { get }
+    
+    /// The access token issued by the authorization server.
+    var tokenType: String { get }
+    
+    /// The lifetime in seconds of the access token.
+    var expires: TimeInterval? { get }
+}
+
+public protocol RefreshableAccessTokenResponse: AccessTokenResponse {
+    
+    /// The refresh token, which can be used to obtain new
+    /// access tokens using the same authorization grant as described in
+    /// [Section 6](https://tools.ietf.org/html/rfc6749#section-6).
+    var refreshToken: String? { get }
+}
+
+/// Parameters returned in the JSON body of the response.
+public enum AccessTokenResponseParameter: String {
+    
+    /// REQUIRED. The access token issued by the authorization server.
+    case access_token
+    
+    /// REQUIRED.  The type of the token issued as described in
+    /// [Section 7.1](https://tools.ietf.org/html/rfc6749#section-7.1).
+    ///
+    /// Value is case insensitive.
+    case token_type
+    
+    /// RECOMMENDED.  The lifetime in seconds of the access token.  For
+    /// example, the value "3600" denotes that the access token will
+    /// expire in one hour from the time the response was generated.
+    /// If omitted, the authorization server SHOULD provide the
+    /// expiration time via other means or document the default value.
+    case expires_in
+    
+    /// OPTIONAL.  The refresh token, which can be used to obtain new
+    /// access tokens using the same authorization grant as described in
+    /// [Section 6](https://tools.ietf.org/html/rfc6749#section-6).
+    case refresh_token
+}
+/*
 public struct AccessTokenResponse {
     
     /// [5.1.  Successful Response](https://tools.ietf.org/html/rfc6749#section-5.1)
@@ -36,7 +96,7 @@ public struct AccessTokenResponse {
     public struct Successful: Response {
         
         /// Parameters returned in the JSON body of the response.
-        public enum JSONKey: String {
+        public enum Parameter: String {
             
             /// REQUIRED. The access token issued by the authorization server.
             case access_token
@@ -295,3 +355,4 @@ public struct TokenResponse: GrantResponse {
     
     public let refreshToken: String
 }
+ */

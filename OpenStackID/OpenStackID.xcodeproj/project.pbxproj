@@ -14,6 +14,8 @@
 		6E11BEF81E0435990094204E /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BEF71E0435990094204E /* Response.swift */; };
 		6E11BF001E0454740094204E /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BEFF1E0454740094204E /* AccessTokenResponse.swift */; };
 		6E11BF041E046F280094204E /* AuthorizationCodeGrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11BF031E046F280094204E /* AuthorizationCodeGrant.swift */; };
+		6E3736691E08C44700709006 /* AccessTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3736681E08C44700709006 /* AccessTokenRequest.swift */; };
+		6E37366B1E08CB2400709006 /* ClientCredentialsGrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E37366A1E08CB2400709006 /* ClientCredentialsGrant.swift */; };
 		6E520FA81E04851600812EE9 /* AuthorizationGrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E520FA71E04851600812EE9 /* AuthorizationGrantType.swift */; };
 		6E520FAA1E048D1800812EE9 /* AccessTokenGrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E520FA91E048D1800812EE9 /* AccessTokenGrantType.swift */; };
 		6E520FAC1E04912200812EE9 /* ImplicitGrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E520FAB1E04912200812EE9 /* ImplicitGrant.swift */; };
@@ -43,6 +45,8 @@
 		6E11BEF71E0435990094204E /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		6E11BEFF1E0454740094204E /* AccessTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
 		6E11BF031E046F280094204E /* AuthorizationCodeGrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCodeGrant.swift; sourceTree = "<group>"; };
+		6E3736681E08C44700709006 /* AccessTokenRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenRequest.swift; sourceTree = "<group>"; };
+		6E37366A1E08CB2400709006 /* ClientCredentialsGrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientCredentialsGrant.swift; sourceTree = "<group>"; };
 		6E520FA71E04851600812EE9 /* AuthorizationGrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationGrantType.swift; sourceTree = "<group>"; };
 		6E520FA91E048D1800812EE9 /* AccessTokenGrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenGrantType.swift; sourceTree = "<group>"; };
 		6E520FAB1E04912200812EE9 /* ImplicitGrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImplicitGrant.swift; sourceTree = "<group>"; };
@@ -98,10 +102,12 @@
 				6E520FA91E048D1800812EE9 /* AccessTokenGrantType.swift */,
 				6E520FB11E04961800812EE9 /* AuthorizationRequest.swift */,
 				6E520FB31E04A0CB00812EE9 /* AuthorizationResponse.swift */,
+				6E3736681E08C44700709006 /* AccessTokenRequest.swift */,
 				6E11BEFF1E0454740094204E /* AccessTokenResponse.swift */,
 				6E11BF031E046F280094204E /* AuthorizationCodeGrant.swift */,
 				6E520FAB1E04912200812EE9 /* ImplicitGrant.swift */,
 				6E520FAD1E04913600812EE9 /* ResourceOwnerPasswordCredentialsGrant.swift */,
+				6E37366A1E08CB2400709006 /* ClientCredentialsGrant.swift */,
 				6E11BEDD1E0424620094204E /* Info.plist */,
 			);
 			path = OpenStackID;
@@ -227,6 +233,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E37366B1E08CB2400709006 /* ClientCredentialsGrant.swift in Sources */,
+				6E3736691E08C44700709006 /* AccessTokenRequest.swift in Sources */,
 				6E11BEF81E0435990094204E /* Response.swift in Sources */,
 				6E520FAC1E04912200812EE9 /* ImplicitGrant.swift in Sources */,
 				6E520FB41E04A0CB00812EE9 /* AuthorizationResponse.swift in Sources */,

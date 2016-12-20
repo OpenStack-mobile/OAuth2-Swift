@@ -29,7 +29,7 @@ public struct AuthorizationCodeGrant {
         /// For example, the client directs the user-agent to make the following
         /// HTTP request using TLS (with extra line breaks for display purposes
         /// only):
-        ///
+        /// 
         /// ```
         /// GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz
         /// &redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb HTTP/1.1
@@ -63,7 +63,7 @@ public struct AuthorizationCodeGrant {
         /// specification.  The client should avoid making assumptions about code
         /// value sizes.  The authorization server SHOULD document the size of
         /// any value it issues.
-        public struct Response: OpenStackID.Response {
+        public struct Response: AuthorizationResponse {
             
             /// If the resource owner grants the access request, the authorization
             /// server issues an authorization code and delivers it to the client by
@@ -102,7 +102,7 @@ public struct AuthorizationCodeGrant {
                     let urlComponents = NSURLComponents(url: redirectURL, resolvingAgainstBaseURL: false),
                     let queryItems = urlComponents.queryItems,
                     let code = queryItems.first(where: { $0.name == Parameter.code.rawValue })?.value,
-                    let state = queryItems.first(where: { $0.name == Parameter.code.rawValue })?.value
+                    let state = queryItems.first(where: { $0.name == Parameter.state.rawValue })?.value
                     else { return nil }
                 
                 self.code = code
@@ -146,7 +146,7 @@ public struct AuthorizationCodeGrant {
         /// "redirect_uri" parameter was included in the initial authorization
         /// request as described in Section 4.1.1, and if included ensure that
         /// their values are identical.
-        public struct Request: OpenStackID.Request {
+        public struct Request: AccessTokenRequest {
             
             /// The client makes a request to the token endpoint by sending the
             /// following parameters using the "`application/x-www-form-urlencoded`"
