@@ -11,15 +11,4 @@ import SwiftFoundation
 public protocol AccessTokenRequest: Request {
     
     static var grantType: AccessTokenGrantType { get }
-    
-    var scope: String? { get }
-}
-
-public enum AccessTokenRequestParameter: String {
-    
-    /// REQUIRED.  Value MUST be set to "authorization_code".
-    case grant_type
-    
-    /// REQUIRED.  The authorization code received from the authorization server.
-    case code
 }

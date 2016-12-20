@@ -215,30 +215,9 @@ public struct AuthorizationCodeGrant {
             }
         }
         
-        /// [4.1.4.  Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.1.4)
-        ///
-        /// If the access token request is valid and authorized, the
-        /// authorization server issues an access token and optional refresh
-        /// token as described in [Section 5.1](https://tools.ietf.org/html/rfc6749#section-5.1).
-        /// If the request client authentication failed or is invalid, the authorization server returns
-        /// an error response as described in [Section 5.2](https://tools.ietf.org/html/rfc6749#section-5.2).
-        ///
-        /// An example successful response:
-        ///
-        /// ```
-        /// HTTP/1.1 200 OK
-        /// Content-Type: application/json;charset=UTF-8
-        /// Cache-Control: no-store
-        /// Pragma: no-cache
-        ///
-        /// {
-        /// "access_token":"2YotnFZFEjr1zCsicMWpAA",
-        /// "token_type":"example",
-        /// "expires_in":3600,
-        /// "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
-        /// "example_parameter":"example_value"
-        /// }
-        /// ```
-        public typealias Response = AccessTokenResponse
+        public struct Response: AccessTokenResponse {
+            
+            
+        }
     }
 }
