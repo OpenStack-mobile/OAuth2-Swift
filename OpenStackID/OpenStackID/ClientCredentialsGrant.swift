@@ -31,11 +31,11 @@ public struct ClientCredentialsGrant {
             
             var queryItems = [URLQueryItem]()
             
-            queryItems.append(URLQueryItem(name: AccessTokenRequestParameter.grant_type.rawValue, value: type(of: self).grantType.rawValue))
+            queryItems.append(URLQueryItem(name: Parameter.grant_type.rawValue, value: type(of: self).grantType.rawValue))
             
             if let scope = self.scope {
                 
-                queryItems.append(URLQueryItem(name: AccessTokenRequestParameter.scope.rawValue, value: scope))
+                queryItems.append(URLQueryItem(name: Parameter.scope.rawValue, value: scope))
             }
             
             urlComponents.queryItems = queryItems
@@ -78,7 +78,7 @@ public struct ClientCredentialsGrant {
         
         public init?(urlResponse: HTTP.Response) {
             
-            guard urlResponse.statusCode == HTTP.StatusCode.Found.rawValue,
+            guard urlResponse.statusCode == HTTP.StatusCode.OK.rawValue,
                 let jsonString = String(UTF8Data: urlResponse.body),
                 let json = JSON.Value(string: jsonString)
                 else { return nil }
