@@ -215,9 +215,10 @@ public struct AuthorizationCodeGrant {
             }
         }
         
+        /*
         public struct Response: AccessTokenResponse {
             
             
-        }
+        }*/
     }
 }

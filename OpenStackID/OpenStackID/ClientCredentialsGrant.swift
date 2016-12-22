@@ -24,6 +24,8 @@ public struct ClientCredentialsGrant {
         
         public var scope: String?
         
+        public var credentials: (String, String)?
+        
         public func toURLRequest() -> HTTP.Request {
             
             guard var urlComponents = URLComponents(string: endpoint)
