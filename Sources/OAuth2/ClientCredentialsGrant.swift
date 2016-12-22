@@ -51,7 +51,8 @@ public struct ClientCredentialsGrant {
             
             return HTTP.Request(url: endpoint,
                                 body: formURLEncoded.toData(),
-                                headers: ["Content-Type": "application/x-www-form-urlencoded"])
+                                headers: ["Content-Type": "application/x-www-form-urlencoded"],
+                                method: .POST)
         }
     }
     
