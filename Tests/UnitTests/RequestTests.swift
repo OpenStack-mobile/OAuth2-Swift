@@ -16,7 +16,10 @@ import SwiftFoundation
 
 final class RequestTests: XCTestCase {
     
-    static let allTests: [(String, (RequestTests) -> () throws -> Void)] = [("testClientCredentials", testClientCredentials)]
+    static let allTests: [(String, (RequestTests) -> () throws -> Void)] = [
+        ("testClientCredentials", testClientCredentials),
+        ("testClientCredentialsError", testClientCredentialsError),
+    ]
     
     func testClientCredentials() {
         
