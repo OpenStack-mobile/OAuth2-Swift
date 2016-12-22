@@ -28,12 +28,31 @@ final class RequestTests: XCTestCase {
             
             let urlResponse = try client.send(request: clientCredentialsRequest.toURLRequest())
             
-            guard let tokenResponse = ClientCredentialsGrant.Response(urlResponse: urlResponse)
+            guard let response = ClientCredentialsGrant.Response.Success(urlResponse: urlResponse)
                 else { XCTFail("Could not parse response: \(urlResponse)"); return }
             
-            print("Got access token:\n\(tokenResponse)")
+            print("Got access token:\n\(response)")
         }
         
+        catch { XCTFail("\(error)") }
+    }
+    
+    func testClientCredentialsError() {
+        
+        let client = HTTP.Client()
+        
+        let clientCredentialsRequest = ClientCredentialsGrant.Request(endpoint: TestData.tokenEndpoint, scope: TestData.scope, credentials: nil)
+        
+        do {
+            
+            let urlResponse = try client.send(request: clientCredentialsRequest.toURLRequest())
+            
+            guard let response = ClientCredentialsGrant.Response.Error(urlResponse: urlResponse)
+                else { XCTFail("Could not parse response: \(urlResponse)"); return }
+            
+            print("Got error:\n\(response)")
+        }
+            
         catch { XCTFail("\(error)") }
     }
 }

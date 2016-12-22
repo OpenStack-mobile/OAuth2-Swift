@@ -56,62 +56,64 @@ public struct ClientCredentialsGrant {
         }
     }
     
-    /// [5.1.  Successful Response](https://tools.ietf.org/html/rfc6749#section-5.1)
-    ///
-    /// The authorization server issues an access token and optional refresh token, and constructs the response.
-    ///
-    /// For example:
-    /// ```
-    /// HTTP/1.1 200 OK
-    /// Content-Type: application/json;charset=UTF-8
-    /// Cache-Control: no-store
-    /// Pragma: no-cache
-    ///
-    /// {
-    /// "access_token":"2YotnFZFEjr1zCsicMWpAA",
-    /// "token_type":"example",
-    /// "expires_in":3600,
-    /// "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
-    /// "example_parameter":"example_value"
-    /// }
-    /// ```
-    public struct Response: AccessTokenResponse, JSONDecodable {
+    public struct Response {
         
-        public static let grantType: AccessTokenGrantType = .clientCredentials
-        
-        public let accessToken: String
-        
-        public let tokenType: String
-        
-        public let expires: TimeInterval?
-        
-        public init?(urlResponse: HTTP.Response) {
+        /// Client Credentials Grant Success Response
+        public struct Success: AccessTokenResponse, JSONDecodable {
             
-            guard urlResponse.statusCode == HTTP.StatusCode.OK.rawValue,
-                let jsonString = String(UTF8Data: urlResponse.body),
-                let json = JSON.Value(string: jsonString)
-                else { return nil }
+            public static let grantType: AccessTokenGrantType = .clientCredentials
             
-            self.init(JSONValue: json)
+            public let accessToken: String
+            
+            public let tokenType: String
+            
+            public let expires: TimeInterval?
+            
+            public init?(urlResponse: HTTP.Response) {
+                
+                guard urlResponse.statusCode == HTTP.StatusCode.OK.rawValue,
+                    let jsonString = String(UTF8Data: urlResponse.body),
+                    let json = JSON.Value(string: jsonString)
+                    else { return nil }
+                
+                self.init(JSONValue: json)
+            }
+            
+            public init?(JSONValue: JSON.Value) {
+                
+                guard let JSONObject = JSONValue.objectValue,
+                    let accessToken = JSONObject[AccessTokenResponseParameter.access_token.rawValue]?.stringValue,
+                    let tokenType = JSONObject[AccessTokenResponseParameter.token_type.rawValue]?.stringValue
+                    else { return nil }
+                
+                self.accessToken = accessToken
+                self.tokenType = tokenType
+                
+                if let expires = JSONObject[AccessTokenResponseParameter.expires_in.rawValue]?.integerValue {
+                    
+                    self.expires = TimeInterval(expires)
+                    
+                } else {
+                    
+                    self.expires = nil
+                }
+            }
         }
         
-        public init?(JSONValue: JSON.Value) {
+        /// Client Credentials Grant Error Response
+        public struct Error: AccessTokenErrorResponseJSON {
             
-            guard let JSONObject = JSONValue.objectValue,
-                let accessToken = JSONObject[AccessTokenResponseParameter.access_token.rawValue]?.stringValue,
-                let tokenType = JSONObject[AccessTokenResponseParameter.token_type.rawValue]?.stringValue
-                else { return nil }
+            public let code: AccessTokenErrorCode
             
-            self.accessToken = accessToken
-            self.tokenType = tokenType
+            public let errorDescription: String?
             
-            if let expires = JSONObject[AccessTokenResponseParameter.expires_in.rawValue]?.integerValue {
+            public let errorURI: String?
+            
+            public init(code: AccessTokenErrorCode, errorDescription: String? = nil, errorURI: String? = nil) {
                 
-                self.expires = TimeInterval(expires)
-                
-            } else {
-                
-                self.expires = nil
+                self.code = code
+                self.errorDescription = errorDescription
+                self.errorURI = errorURI
             }
         }
     }
