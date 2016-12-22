@@ -8,19 +8,20 @@
 
 import SwiftFoundation
 
+/// Resource Owner Password Credentials Grant OAuth2 flow
 public struct ResourceOwnerPasswordCredentialsGrant {
     
     public struct Request: AccessTokenRequest {
         
         public enum Parameter: String {
             
-            case grant_type, scope, username, password
+            case grant_type, scope, client_id, client_secret, username, password
         }
         
         public static let grantType: AccessTokenGrantType = .password
         
         /// The URL of the OAuth2 endpoint for access token grants.
-        public var endpoint: String
+        public var endpoint: URL
         
         public var scope: String?
         
@@ -28,52 +29,43 @@ public struct ResourceOwnerPasswordCredentialsGrant {
         
         public var password: String
         
+        public var clientCredentials: (identifier: String, secret: String)?
+        
         public func toURLRequest() -> HTTP.Request {
             
-            guard var urlComponents = URLComponents(string: endpoint)
-                else { fatalError("Invalid URL: \(endpoint)") }
+            var parameters = [Parameter: String]()
             
-            var queryItems = [URLQueryItem]()
+            parameters[.grant_type] = type(of: self).grantType.rawValue
             
-            queryItems.append(URLQueryItem(name: Parameter.grant_type.rawValue, value: type(of: self).grantType.rawValue))
+            parameters[.scope] = scope
             
-            queryItems.append(URLQueryItem(name: Parameter.username.rawValue, value: username))
+            parameters[.username] = username
             
-            queryItems.append(URLQueryItem(name: Parameter.password.rawValue, value: password))
+            parameters[.password] = password
             
-            if let scope = self.scope {
+            if let (clientID, clientSecret) = clientCredentials {
                 
-                queryItems.append(URLQueryItem(name: Parameter.scope.rawValue, value: scope))
+                parameters[.client_id] = clientID
+                
+                parameters[.client_secret] = clientSecret
             }
             
-            urlComponents.queryItems = queryItems
+            // crashes compiler
+            //let stringParameters = parameters.reduce([String: String](), { $0.0[$0.1.key.rawValue] = $0.1.value })
             
-            guard let url = urlComponents.url
-                else { fatalError("Invalid URL components: \(urlComponents)") }
+            var stringParameters = [String: String](minimumCapacity: parameters.count)
+            parameters.forEach { stringParameters[$0.0.rawValue] = $0.value }
             
-            return HTTP.Request(url: url, headers: ["Content-Type": "application/x-www-form-urlencoded"])
+            let formURLEncoded = FormURLEncoded(parameters: stringParameters)
+            
+            return HTTP.Request(url: endpoint,
+                                body: formURLEncoded.toData(),
+                                headers: ["Content-Type": "application/x-www-form-urlencoded"],
+                                method: .POST)
         }
     }
     
-    /// [5.1.  Successful Response](https://tools.ietf.org/html/rfc6749#section-5.1)
-    ///
-    /// The authorization server issues an access token and optional refresh token, and constructs the response.
-    ///
-    /// For example:
-    /// ```
-    /// HTTP/1.1 200 OK
-    /// Content-Type: application/json;charset=UTF-8
-    /// Cache-Control: no-store
-    /// Pragma: no-cache
-    ///
-    /// {
-    /// "access_token":"2YotnFZFEjr1zCsicMWpAA",
-    /// "token_type":"example",
-    /// "expires_in":3600,
-    /// "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
-    /// "example_parameter":"example_value"
-    /// }
-    /// ```
+    
     public struct Response: RefreshableAccessTokenResponse, JSONDecodable {
         
         public static let grantType: AccessTokenGrantType = .clientCredentials
@@ -115,7 +107,7 @@ public struct ResourceOwnerPasswordCredentialsGrant {
                 self.expires = nil
             }
             
-            self.refreshToken = JSONObject[AccessTokenResponseParameter.expires_in.rawValue]?.stringValue
+            self.refreshToken = JSONObject[AccessTokenResponseParameter.refresh_token.rawValue]?.stringValue
         }
     }
 }

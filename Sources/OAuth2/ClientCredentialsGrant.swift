@@ -8,6 +8,7 @@
 
 import SwiftFoundation
 
+/// Client Credentials Grant OAuth2 flow
 public struct ClientCredentialsGrant {
     
     public struct Request: AccessTokenRequest {
@@ -24,7 +25,7 @@ public struct ClientCredentialsGrant {
         
         public var scope: String?
         
-        public var credentials: (clientIdentifier: String, clientSecret: String)?
+        public var clientCredentials: (identifier: String, secret: String)?
         
         public func toURLRequest() -> HTTP.Request {
             
@@ -34,7 +35,7 @@ public struct ClientCredentialsGrant {
             
             parameters[.scope] = scope
             
-            if let (clientID, clientSecret) = credentials {
+            if let (clientID, clientSecret) = clientCredentials {
                 
                 parameters[.client_id] = clientID
                 
