@@ -14,38 +14,44 @@ public struct ClientCredentialsGrant {
         
         public enum Parameter: String {
             
-            case grant_type, scope
+            case grant_type, scope, client_id, client_secret
         }
         
         public static let grantType: AccessTokenGrantType = .clientCredentials
         
         /// The URL of the OAuth2 endpoint for access token grants.
-        public var endpoint: String
+        public var endpoint: URL
         
         public var scope: String?
         
-        public var credentials: (String, String)?
+        public var credentials: (clientIdentifier: String, clientSecret: String)?
         
         public func toURLRequest() -> HTTP.Request {
             
-            guard var urlComponents = URLComponents(string: endpoint)
-                else { fatalError("Invalid URL: \(endpoint)") }
+            var parameters = [Parameter: String]()
             
-            var queryItems = [URLQueryItem]()
+            parameters[.grant_type] = type(of: self).grantType.rawValue
             
-            queryItems.append(URLQueryItem(name: Parameter.grant_type.rawValue, value: type(of: self).grantType.rawValue))
+            parameters[.scope] = scope
             
-            if let scope = self.scope {
+            if let (clientID, clientSecret) = credentials {
                 
-                queryItems.append(URLQueryItem(name: Parameter.scope.rawValue, value: scope))
+                parameters[.client_id] = clientID
+                
+                parameters[.client_secret] = clientSecret
             }
             
-            urlComponents.queryItems = queryItems
+            // crashes compiler
+            //let stringParameters = parameters.reduce([String: String](), { $0.0[$0.1.key.rawValue] = $0.1.value })
             
-            guard let url = urlComponents.url
-                else { fatalError("Invalid URL components: \(urlComponents)") }
+            var stringParameters = [String: String](minimumCapacity: parameters.count)
+            parameters.forEach { stringParameters[$0.0.rawValue] = $0.value }
             
-            return HTTP.Request(url: url, headers: ["Content-Type": "application/x-www-form-urlencoded"])
+            let formURLEncoded = FormURLEncoded(parameters: stringParameters)
+            
+            return HTTP.Request(url: endpoint,
+                                body: formURLEncoded.toData(),
+                                headers: ["Content-Type": "application/x-www-form-urlencoded"])
         }
     }
     
