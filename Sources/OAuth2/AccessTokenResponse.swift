@@ -95,9 +95,6 @@ public protocol AccessTokenErrorResponse: ErrorResponse {
     
     /// Error code
     var code: AccessTokenErrorCode { get }
-    
-    /// Defualt initializer
-    init(code: Code, errorDescription: String?, errorURI: String?)
 }
 
 public enum AccessTokenErrorCode: String, ErrorCode {
@@ -140,7 +137,11 @@ public enum AccessTokenErrorCode: String, ErrorCode {
 
 // MARK: - Parsing Implementations
 
-public protocol AccessTokenErrorResponseJSON: AccessTokenErrorResponse, JSONDecodable { }
+public protocol AccessTokenErrorResponseJSON: AccessTokenErrorResponse, JSONDecodable {
+    
+    /// Defualt initializer
+    init(code: Code, errorDescription: String?, errorURI: String?)
+}
 
 public extension AccessTokenErrorResponseJSON {
     

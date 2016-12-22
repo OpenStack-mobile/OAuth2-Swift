@@ -65,49 +65,68 @@ public struct ResourceOwnerPasswordCredentialsGrant {
         }
     }
     
-    
-    public struct Response: RefreshableAccessTokenResponse, JSONDecodable {
+    public struct Response {
         
-        public static let grantType: AccessTokenGrantType = .clientCredentials
-        
-        public let accessToken: String
-        
-        public let tokenType: String
-        
-        public let expires: TimeInterval?
-        
-        public let refreshToken: String?
-        
-        public init?(urlResponse: HTTP.Response) {
+        public struct Success: RefreshableAccessTokenResponse, JSONDecodable {
             
-            guard urlResponse.statusCode == HTTP.StatusCode.OK.rawValue,
-                let jsonString = String(UTF8Data: urlResponse.body),
-                let json = JSON.Value(string: jsonString)
-                else { return nil }
+            public static let grantType: AccessTokenGrantType = .clientCredentials
             
-            self.init(JSONValue: json)
-        }
-        
-        public init?(JSONValue: JSON.Value) {
+            public let accessToken: String
             
-            guard let JSONObject = JSONValue.objectValue,
-                let accessToken = JSONObject[AccessTokenResponseParameter.access_token.rawValue]?.stringValue,
-                let tokenType = JSONObject[AccessTokenResponseParameter.token_type.rawValue]?.stringValue
-                else { return nil }
+            public let tokenType: String
             
-            self.accessToken = accessToken
-            self.tokenType = tokenType
+            public let expires: TimeInterval?
             
-            if let expires = JSONObject[AccessTokenResponseParameter.expires_in.rawValue]?.integerValue {
+            public let refreshToken: String?
+            
+            public init?(urlResponse: HTTP.Response) {
                 
-                self.expires = TimeInterval(expires)
+                guard urlResponse.statusCode == HTTP.StatusCode.OK.rawValue,
+                    let jsonString = String(UTF8Data: urlResponse.body),
+                    let json = JSON.Value(string: jsonString)
+                    else { return nil }
                 
-            } else {
-                
-                self.expires = nil
+                self.init(JSONValue: json)
             }
             
-            self.refreshToken = JSONObject[AccessTokenResponseParameter.refresh_token.rawValue]?.stringValue
+            public init?(JSONValue: JSON.Value) {
+                
+                guard let JSONObject = JSONValue.objectValue,
+                    let accessToken = JSONObject[AccessTokenResponseParameter.access_token.rawValue]?.stringValue,
+                    let tokenType = JSONObject[AccessTokenResponseParameter.token_type.rawValue]?.stringValue
+                    else { return nil }
+                
+                self.accessToken = accessToken
+                self.tokenType = tokenType
+                
+                if let expires = JSONObject[AccessTokenResponseParameter.expires_in.rawValue]?.integerValue {
+                    
+                    self.expires = TimeInterval(expires)
+                    
+                } else {
+                    
+                    self.expires = nil
+                }
+                
+                self.refreshToken = JSONObject[AccessTokenResponseParameter.refresh_token.rawValue]?.stringValue
+            }
+        }
+        
+        /// Resource Owner Password Credentials Grant Error Response
+        public struct Error: AccessTokenErrorResponseJSON {
+            
+            public let code: AccessTokenErrorCode
+            
+            public let errorDescription: String?
+            
+            public let errorURI: String?
+            
+            public init(code: AccessTokenErrorCode, errorDescription: String? = nil, errorURI: String? = nil) {
+                
+                self.code = code
+                self.errorDescription = errorDescription
+                self.errorURI = errorURI
+            }
         }
     }
 }
